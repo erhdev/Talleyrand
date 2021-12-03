@@ -35,7 +35,7 @@ app.get('/players/gameID.:number', (req,res) => {
     // `${#}
     Player.find({'gameID': `${req.params.number}`}, 'name nation', function(err, players)
     {   
-        res.send(players);
+        res.json(players);
     })
 })
 
