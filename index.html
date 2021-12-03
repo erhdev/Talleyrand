@@ -14,17 +14,70 @@
  -->
   
 
-  <link rel="stylesheet" href="assets/style/style.css">
+  <link rel="stylesheet" href="./assets/style/style.css">
 
 </head>
 
 <body>
+
   <form>
     <p>Enter Player Name</p>
-    <input type="text">
+    <input id="playerName" type="text">
+    <p>Enter Preferred Nation</p>
+    <input id="nation" type="text">
+   
   </form>
+  <button id="goButton">Submit</button>
+  <button id="findPlayers">Find Players</button>
 
+  <div id="textBox"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    const go = $('#goButton')
+    const findPlayers = $('#findPlayers')
+    let playersPopulated = false;
     
-  <script src="assets/javascript/app.js"></script>
+
+    go.on('click', function(){
+      const playerName = $('#playerName').val();
+      const nation = $('#nation').val();
+      $.ajax({
+        method: 'POST',
+        url: `/players/${playerName}.${nation}`,
+      }).then($('#textBox').text('Data Submitted'))
+    })
+
+    findPlayers.on('click', function(){
+      $.ajax({
+        method: "GET",
+        url: "/players/gameID.1"
+      }).then(function(result) {
+
+        console.log(result)
+        
+          for(i=0; i < result.length; i++) {
+           $('#textBox').append(
+           `<p>Player: ${result[i].name}, Nation: ${result[i].nation}</p>
+            <input type="text">
+            <button id='${result[i]._id}' class="sendMessage">Send Message</button>`
+            )
+         }
+         playersPopulated = true;
+      })
+    })
+
+    sendMessage.on('load', function(){
+      const sender = "";
+      const recipient = this.id;
+      console.log("firing")
+      console.log(recipient)
+      
+      $.ajax({
+        method:"POST",
+        url:`message/${sender}/${recipient}`
+      })
+    })
+  </script>
 </body>
 </html>

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const Player = require('../models/playerSchema');
+const Message = require('../models/messageSchema');
 
 // mongodb connection url
 const dbURL = 'mongodb+srv://testUser:testtesttest@cluster0.jvkze.mongodb.net/Cluster0?retryWrites=true&w=majority'
