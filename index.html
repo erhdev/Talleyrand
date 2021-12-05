@@ -35,9 +35,10 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     //establishes constants of DOM objects for brevity
-    const go = $('#goButton')
-    const findPlayers = $('#findPlayers')
+    const go = $('#goButton');
+    const findPlayers = $('#findPlayers');
     let userID = '';
+    let userNation = '';
     
 // submits value of entry fields to database on click of button
     go.on('click', function(){
@@ -51,6 +52,8 @@
         // accesible by the variable userID
         
         userID = document.cookie = `${result._id}`;
+        userNation = document.cookie = `${result.nation}`;
+
         console.log(userID)
         $('#textBox').text('Player Created');
 

@@ -1,5 +1,4 @@
 # Talleyrand
-A lightweight, matchmaking Diplomacy clone.
+A lightweight Diplomacy clone.
 
-
-Maybe I can store the playerID value as a cookie.
+Next phase is to refactor the routes into a cleaner file structure, convert the client side into ejs, and add 'chatroom' functionality.
