@@ -34,50 +34,74 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
+    //establishes constants of DOM objects for brevity
     const go = $('#goButton')
     const findPlayers = $('#findPlayers')
-    let playersPopulated = false;
+    let userID = '';
     
-
+// submits value of entry fields to database on click of button
     go.on('click', function(){
       const playerName = $('#playerName').val();
       const nation = $('#nation').val();
       $.ajax({
         method: 'POST',
         url: `/players/${playerName}.${nation}`,
-      }).then($('#textBox').text('Data Submitted'))
+      }).then(function(result) {
+        // this takes the result send back from the database, takes the id of the player, and saves it as a cookie
+        // accesible by the variable userID
+        
+        userID = document.cookie = `${result._id}`;
+        console.log(userID)
+        $('#textBox').text('Player Created');
+
+        }
+      )
     })
 
+// first part retrieves list of players associated with the proper gameID. at this time gameID is set to 1 but this will be a real 
+// ObjectId in the future
     findPlayers.on('click', function(){
       $.ajax({
         method: "GET",
         url: "/players/gameID.1"
       }).then(function(result) {
-
+        console.log(userID)
         console.log(result)
-        
+
+        // this creates a section with playerName and nation for each found player 
+        // and it attaches the appropriate id for each player to a button 
           for(i=0; i < result.length; i++) {
            $('#textBox').append(
            `<p>Player: ${result[i].name}, Nation: ${result[i].nation}</p>
-            <input type="text">
+            <input id='${result[i]._id + userID}'type="text">
             <button id='${result[i]._id}' class="sendMessage">Send Message</button>`
             )
          }
-         playersPopulated = true;
-      })
-    })
+      }).then(function(){
+        // this attaches a function to the buttons generated in the above function. 
+        // it is appended to the above function because it will not trigger when executed before the .sendMessage class
+        // is created
 
-    sendMessage.on('load', function(){
-      const sender = "";
-      const recipient = this.id;
-      console.log("firing")
-      console.log(recipient)
-      
-      $.ajax({
-        method:"POST",
-        url:`message/${sender}/${recipient}`
+        // the function creates a message document with the sender and recipient ids in the url parameters
+        // then it appends a <p> containing the message history between the players
+        $('.sendMessage').on('click', function(){
+          const recipient = this.id;
+          const message = $(`#${recipient+userID}`).val();
+          
+          console.log("firing")
+          console.log(recipient)
+          console.log(message)
+         
+          $.ajax({
+            method:"POST",
+            url:`/message/${userID}/${recipient}/${message}`,
+            })
+          })
+        })
       })
-    })
+
+    
+
   </script>
 </body>
 </html>
