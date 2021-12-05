@@ -14,11 +14,6 @@ let playerSchema = new Schema({
     gameID: {
         type: Number
     },
-    // retrieves an array of documents by ID that are of the message schema
-    // I need a way to differentiate the different comm logs
-    commsWithAustria: [{type: Schema.Types.ObjectId, ref: 'Message'}]
-}
-
 )
 
 const Player = mongoose.model('Player', playerSchema);
