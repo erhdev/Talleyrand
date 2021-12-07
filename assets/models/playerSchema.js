@@ -14,7 +14,7 @@ let playerSchema = new Schema({
     gameID: {
         type: Number
     },
-)
+})
 
 const Player = mongoose.model('Player', playerSchema);
 
